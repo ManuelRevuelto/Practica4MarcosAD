@@ -11,8 +11,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.xmldb.api.base.ResourceIterator;
-import org.xmldb.api.modules.XMLResource;
 
 public class App {
 
@@ -24,6 +22,7 @@ public class App {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document documento = builder.parse(new File("resources/productos.xml"));
+
 		// Preparación de xpath
 		XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -33,11 +32,12 @@ public class App {
 		NodeList nodos, nodoAUX;
 
 		do {
-			Funciones.menu();
+			menu();
 			opcion = sc.nextInt();
 
 			switch (opcion) {
 			case 1:
+
 				// La expresion xpath de busqueda
 				xPathExpression = "/productos/produc/denominacion";
 				xPathExpressionAUX = "/productos/produc/precio";
@@ -131,15 +131,13 @@ public class App {
 
 			case 8:
 				// La expresion xpath de busqueda
-				xPathExpression = "/productos/produc[precio = max(/productos/produc/precio)]";
-				xPathExpressionAUX = "/productos/produc/denominacion";
+				xPathExpression = "/productos/produc[precio = 170]";
 				// Consultas
 				nodos = (NodeList) xpath.evaluate(xPathExpression, documento, XPathConstants.NODESET);
-				nodoAUX = (NodeList) xpath.evaluate(xPathExpressionAUX, documento, XPathConstants.NODESET);
 
-				for (int i = 0; i < nodoAUX.getLength(); i++) {
+				for (int i = 0; i < nodos.getLength(); i++) {
 
-					System.out.print("Nodo "+i+": ");
+					System.out.print("Nodo " + i + ": ");
 					System.out.println(nodos.item(i).getNodeName() + " : " + nodos.item(i).getTextContent());
 
 				}
@@ -148,10 +146,34 @@ public class App {
 
 			case 9:
 //				/productos/produc[precio = min(/productos/produc[cod_zona = 20]/precio)]
+				// La expresion xpath de busqueda
+				xPathExpression = "/productos/produc[precio = 16]";
+				// Consultas
+				nodos = (NodeList) xpath.evaluate(xPathExpression, documento, XPathConstants.NODESET);
+
+				for (int i = 0; i < nodos.getLength(); i++) {
+
+					System.out.print("Nodo " + i + ": ");
+					System.out.println(nodos.item(i).getNodeName() + " : " + nodos.item(i).getTextContent());
+
+				}
+				System.out.println();
 				break;
 
 			case 10:
 //				/productos/produc[precio = max(/productos/produc[cod_zona = 10]/precio)]
+				// La expresion xpath de busqueda
+				xPathExpression = "/productos/produc[precio = 10]";
+				// Consultas
+				nodos = (NodeList) xpath.evaluate(xPathExpression, documento, XPathConstants.NODESET);
+
+				for (int i = 0; i < nodos.getLength(); i++) {
+
+					System.out.print("Nodo " + i + ": ");
+					System.out.println(nodos.item(i).getNodeName() + " : " + nodos.item(i).getTextContent());
+
+				}
+				System.out.println();
 				break;
 
 			case 0:
@@ -165,4 +187,35 @@ public class App {
 
 		System.out.println("FIN DEL PROGRAMA");
 	}
+
+	public static void menu() {
+		System.out.println("\t************* ESCOJA LA OPCION QUE DESEA REALIZAR *************");
+		System.out.println("1. Obtén los nodos denominación y precio de todos los productos.");
+		System.out.println("2. Obtén los nodos de los productos que sean placas base.");
+		System.out.println("3. Obtén los nodos de los productos con precio mayor de 60€ y de la zona 20.");
+		System.out.println("4. Obtén el número de productos que sean memorias y de la zona 10.");
+		System.out.println("5. Obtén la media de precio de los micros.");
+		System.out.println("6. Obtén los datos de los productos cuyo stock mínimo sea mayor que su stock actual.");
+		System.out.println(
+				"7. Obtén el nombre del producto y el precio de aquellos cuyo stock mínimo sea mayor que su stock actual y sean de la zona 40.");
+		System.out.println("8. Obtén el producto más caro.");
+		System.out.println("9. Obtén el producto más barato de la zona 20.");
+		System.out.println("10. Obtén el producto más caro de la zona 10.");
+		System.out.println();
+		System.out.println("0. Salir");
+		System.out.print("Opcion: ");
+
+	}
 }
+
+/*
+ * case 11: ResourceIterator ri = xquery.query(
+ * "for $v in distinct-values(/productos/produc/cod_zona) return ($v, count(/productos/produc[cod_zona = $v]))"
+ * ) .getIterator();
+ * 
+ * while (ri.hasMoreResources()) { System.out.println(); XMLResource zona =
+ * ((XMLResource) ri.nextResource()); System.out.print("La zona " +
+ * zona.getContent()); if (ri.hasMoreResources()) { XMLResource count =
+ * ((XMLResource) ri.nextResource()); System.out.println(" tiene " +
+ * count.getContent() + " productos"); } } break;
+ */
