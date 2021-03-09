@@ -45,25 +45,6 @@ public class XQuery {
 							System.out.println(" tiene " + count.getContent() + " productos");
 						}
 					}
-
-					ri = xquery.query(
-							"for $suc in /sucursales/sucursal return (data($suc/@codigo), count($suc/cuenta[data(@tipo)='AHORRO']), count($suc/cuenta[data(@tipo)='PENSIONES']))")
-							.getIterator();
-					while (ri.hasMoreResources()) {
-						System.out.println();
-						XMLResource nodo = ((XMLResource) ri.nextResource());
-						System.out.print("La sucursal " + nodo.getContent());
-
-						if (ri.hasMoreResources()) {
-							XMLResource n2 = (XMLResource) ri.nextResource();
-							System.out.print(" tiene " + n2.getContent() + " cuentas tipo AHORRO y ");
-						}
-
-						if (ri.hasMoreResources()) {
-							XMLResource n2 = (XMLResource) ri.nextResource();
-							System.out.println(n2.getContent() + " cuentas tipo PENSIONES");
-						}
-					}
 					System.out.println();
 					break;
 
@@ -111,20 +92,6 @@ public class XQuery {
 
 				case 5:
 					ri = xquery.query(
-							"/sucursales/sucursal/cuenta[data(@tipo) = 'PENSIONES' and aportacion = max(/sucursales/sucursal/cuenta/aportacion)]")
-							.getIterator();
-
-					while (ri.hasMoreResources()) {
-						System.out.println();
-
-						XMLResource res = (XMLResource) ri.nextResource();
-						System.out.println(res.getContent());
-					}
-					System.out.println();
-					break;
-
-				case 6:
-					ri = xquery.query(
 							"for $suc in /sucursales/sucursal return (data($suc/@codigo), count($suc/cuenta[data(@tipo)='AHORRO']), count($suc/cuenta[data(@tipo)='PENSIONES']))")
 							.getIterator();
 					while (ri.hasMoreResources()) {
@@ -145,7 +112,7 @@ public class XQuery {
 					System.out.println();
 					break;
 
-				case 7:
+				case 6:
 					ri = xquery.query(
 							"for $suc in /sucursales/sucursal return (data($suc/@codigo), $suc/director/text(), $suc/poblacion/text(), sum($suc/cuenta/saldodebe), sum($suc/cuenta/saldohaber))")
 							.getIterator();
@@ -179,7 +146,7 @@ public class XQuery {
 					System.out.println();
 					break;
 
-				case 8:
+				case 7:
 					ri = xquery.query(
 							"for $suc in /sucursales/sucursal[count(cuenta) > 3] return (data($suc/@codigo), $suc/director/text(), $suc/poblacion/text())")
 							.getIterator();
@@ -203,7 +170,7 @@ public class XQuery {
 					System.out.println();
 					break;
 
-				case 9:
+				case 8:
 					ri = xquery.query(
 							"for $suc in /sucursales/sucursal return (data($suc/@codigo), $suc/cuenta[saldodebe = max($suc/cuenta/saldodebe)]/*/text())")
 							.getIterator();
@@ -237,7 +204,7 @@ public class XQuery {
 					System.out.println();
 					break;
 
-				case 10:
+				case 9:
 					ri = xquery.query(
 							"/sucursales/sucursal/cuenta[data(@tipo) = 'PENSIONES' and aportacion = max(/sucursales/sucursal/cuenta/aportacion)]")
 							.getIterator();
@@ -269,18 +236,18 @@ public class XQuery {
 	}
 
 	public static void menu() {
-		System.out.println("\t************* ESCOJA LA OPCION QUE DESEA REALIZAR *************");
-		System.out.println("1. Obtén los nodos denominación y precio de todos los productos.");
-		System.out.println("2. Obtén los nodos de los productos que sean placas base.");
-		System.out.println("3. Obtén los nodos de los productos con precio mayor de 60€ y de la zona 20.");
-		System.out.println("4. Obtén el número de productos que sean memorias y de la zona 10.");
-		System.out.println("5. Obtén la media de precio de los micros.");
-		System.out.println("6. Obtén los datos de los productos cuyo stock mínimo sea mayor que su stock actual.");
-		System.out.println(
-				"7. Obtén el nombre del producto y el precio de aquellos cuyo stock mínimo sea mayor que su stock actual y sean de la zona 40.");
-		System.out.println("8. Obtén el producto más caro.");
-		System.out.println("9. Obtén el producto más barato de la zona 20.");
-		System.out.println("10. Obtén el producto más caro de la zona 10.");
+		System.out.println("\t************* ESCOJA LA OPCION QUE DESEA REALIZAR SOBRE LOS PRODUCTOS*************");
+		System.out.println("1. Obtén por cada zona el número de productos que tiene.");
+		System.out.println("2. Obtén la denominación de los productos.");
+		System.out.println("3. Obtén por cada zona la denominación del o de los productos más caros.");
+		System.out.println("4. Obtén la denominación de los productos.");
+		System.out.println();
+		System.out.println("\t************* ESCOJA LA OPCION QUE DESEA REALIZAR SOBRE SUCURSALES BANCARIAS *************");
+		System.out.println("5. Devuelve el código de sucursal y el número de cuentas que tiene de tipo AHORRO y de tipo pensiones.");
+		System.out.println("6. Devuelve por cada sucursal el código de sucursal, el director, la población, la suma del total saldodebe y la suma del total saldohaber de sus cuentas.");
+		System.out.println("7. Devuelve el nombre de los directores, el código de sucursal y la población de las sucursales con más de 3 cuentas.");
+		System.out.println("8. Devuelve por cada sucursal, el código de sucursal y los datos de las cuentas con más saldodebe.");
+		System.out.println("9. Devuelve la cuenta del tipo PENSIONES que ha hecho más aportación.");
 		System.out.println();
 		System.out.println("0. Salir");
 		System.out.print("Opcion: ");
